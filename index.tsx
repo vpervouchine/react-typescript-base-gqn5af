@@ -47,6 +47,14 @@ interface AppState {
   count: number;
 }
 
+const incrementCount = (state: AppState) => {
+  return {count: state.count + 1};
+};
+
+const updateTime = () => {
+  return {date: new Date()};
+};
+
 class App extends React.PureComponent<{}, AppState> {
 
   private dateTimer = 0;
@@ -60,7 +68,7 @@ class App extends React.PureComponent<{}, AppState> {
   componentDidMount() {
     this.updateTime();
     this.dateTimer = setInterval(this.updateTime.bind(this), 1000);
-    // this.countTimer = setInterval(this.updateCount.bind(this), 10);
+    this.countTimer = setInterval(this.updateCount.bind(this), 1500);
   }
 
   componentWillUnmount() {
@@ -84,11 +92,11 @@ class App extends React.PureComponent<{}, AppState> {
   }
 
   private updateTime() {
-    this.setState({date: new Date()});
+    this.setState(updateTime());
   }
 
   private updateCount() {
-    this.setState({count: this.state.count + 1});
+    this.setState(incrementCount(this.state));
   }
 }
 
