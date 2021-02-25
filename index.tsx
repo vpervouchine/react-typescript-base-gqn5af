@@ -1,7 +1,14 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Hello from './Hello';
+import { createStore } from 'redux';
+import { connect, Provider } from 'react-redux';
 import './style.css';
+
+import { initialStoreState, StoreState } from './state';
+import { reduce } from './reducers';
+
+const store = createStore(reduce, initialStoreState);
+const dispatch = store.dispatch;
 
 interface Task {
   name: string;
@@ -30,43 +37,28 @@ class TaskList extends React.PureComponent<TaskListProps> {
   }
 };
 
-const props = {
-  taskList: {
-    title: 'Learning Web UI Development',
-    tasks: [
-      {
-        name: 'Typescript',
-        desc: 'Learn typescript'
-      }
-    ]
-  }
+const taskList = {
+  title: 'Learning Web UI Development',
+  tasks: [
+    {
+      name: 'Typescript',
+      desc: 'Learn typescript'
+    }
+  ]
 };
 
-interface AppState {
+interface AppProps {
   date: Date;
   count: number;
+  tasks: TaskListProps;
 }
 
-const incrementCount = (state: AppState) => {
-  return {count: state.count + 1};
-};
-
-const updateTime = () => {
-  return {date: new Date()};
-};
-
-class App extends React.PureComponent<{}, AppState> {
+class App extends React.PureComponent<AppProps> {
 
   private dateTimer = 0;
   private counterTimer = 0;
 
-  constructor(props: {}) {
-    super(props);
-    this.state = { date: new Date(), count: 0 };
-  }
-
   componentDidMount() {
-    this.updateTime();
     this.dateTimer = setInterval(this.updateTime.bind(this), 1000);
     this.countTimer = setInterval(this.updateCount.bind(this), 1500);
   }
@@ -83,21 +75,37 @@ class App extends React.PureComponent<{}, AppState> {
   }
 
   render() {
+    const { tasks, date, count } = this.props;
     return (
       <div>
-        <TaskList {...props.taskList} date={this.state.date}/>
-        <p>Count: {this.state.count}</p>
+        <TaskList {...tasks} date={date}/>
+        <p>Count: {count}</p>
       </div>
     );
   }
 
   private updateTime() {
-    this.setState(updateTime());
+    // TODO
   }
 
   private updateCount() {
-    this.setState(incrementCount(this.state));
+    // TODO
   }
 }
 
-render(<App />, document.getElementById('root'));
+const mapToStateProps = (state: StoreState) => {
+  return {
+    date: state.date,
+    count: state.count,
+    tasks: taskList
+  };
+};
+
+const AppContainer = connect(mapToStateProps)(App);
+
+render(
+  <Provider store={store}>
+    <AppContainer />
+  </Provider>,
+  document.getElementById('root')
+);
