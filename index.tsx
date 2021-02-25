@@ -5,7 +5,7 @@ import './style.css';
 
 interface Task {
   name: string;
-  desc: string;
+  desc: string; // TODO make it optional
 }
 
 interface TaskListProps {
@@ -22,6 +22,7 @@ class TaskList extends PureComponent<TaskListProps> {
         <ul>
           {tasks.map(task => (<li>{task.name}: {task.desc}</li>))}
         </ul>
+        Number of tasks: {tasks.length}
       </div>
     );
   }
