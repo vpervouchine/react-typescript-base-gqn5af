@@ -7,7 +7,6 @@ import './style.css';
 
 import { initialStoreState, StoreState } from './state';
 import { reduce } from './reducers';
-import { incrementCounter } from './actions';
 
 const store = createStore(reduce, initialStoreState);
 const dispatch = store.dispatch;
