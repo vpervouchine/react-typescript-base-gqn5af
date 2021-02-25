@@ -44,25 +44,33 @@ const props = {
 
 interface AppState {
   date: Date;
+  count: number;
 }
 
 class App extends React.PureComponent<{}, AppState> {
 
   private dateTimer = 0;
+  private counterTimer = 0;
 
   constructor(props: {}) {
     super(props);
-    this.state = { date: new Date() };
+    this.state = { date: new Date(), count: 0 };
   }
 
   componentDidMount() {
     this.updateTime();
+    this.dateTimer = setInterval(this.updateTime.bind(this), 1000);
+    // this.countTimer = setInterval(this.updateCount.bind(this), 10);
   }
 
   componentWillUnmount() {
     if (this.dateTimer > 0) {
-      clearTimeout(this.dateTimer);
+      clearInterval(this.dateTimer);
       this.dateTimer = 0;
+    }
+    if (this.countTimer > 0) {
+      clearInterval(this.countTimer);
+      this.countTimer = 0;
     }
   }
 
@@ -70,13 +78,17 @@ class App extends React.PureComponent<{}, AppState> {
     return (
       <div>
         <TaskList {...props.taskList} date={this.state.date}/>
+        <p>Count: {this.state.count}</p>
       </div>
     );
   }
 
   private updateTime() {
-    this.dateTimer = setTimeout(this.updateTime.bind(this), 1000);
     this.setState({date: new Date()});
+  }
+
+  private updateCount() {
+    this.setState({count: this.state.count + 1});
   }
 }
 
