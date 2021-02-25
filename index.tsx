@@ -58,7 +58,7 @@ interface AppProps {
 class App extends React.PureComponent<AppProps> {
 
   private dateTimer = 0;
-  private counterTimer = 0;
+  private countTimer = 0;
 
   componentDidMount() {
     this.dateTimer = setInterval(this.updateTime.bind(this), 1000);
