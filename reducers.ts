@@ -7,7 +7,7 @@ export const reduce = createReducer(initialStoreState)
     actions.incrementCounter,
     (state, action) => ({
       ...state,
-      count: state.count + 1
+      count: state.count + action.inc
     })
   )
   .handleAction(
