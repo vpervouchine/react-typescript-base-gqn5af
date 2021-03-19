@@ -3,6 +3,7 @@ import { initialStoreState } from './state';
 import * as actions from './actions';
 
 export const reduce = createReducer(initialStoreState)
+/*
   .handleAction(
     actions.incrementCounter,
     (state, action) => ({
@@ -15,6 +16,20 @@ export const reduce = createReducer(initialStoreState)
     (state, action) => ({
       ...state,
       date: action.date
+    })
+  )
+  */
+  .handleAction(
+    actions.addTask,
+    (state, action) => ({
+      ...state,
+      taskList: [
+        ...(state.taskList),
+        {
+          name: action.task,
+          desc: action.desc
+        }
+      ]
     })
   )
 ;
